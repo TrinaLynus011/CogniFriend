@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Cognifriend</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Header Styling */
+        nav {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-logo i {
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .nav-links a.active {
+            font-weight: 600;
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+        }
+        
+        /* Video Search Section Styles */
+        .video-search-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .video-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .video-thumbnail {
+            height: 180px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .video-modal .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+        
+        .video-modal .modal-header {
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar-video {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        #videoResults {
+            min-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-logo">
+            <i class="fas fa-brain"></i>
+            <span>Cognifriend</span>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="courses.html">My Courses</a>
+            <a href="progress.html">Progress</a>
+            <a href="profile.html" style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: #6c5ce7; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">JEC</div>
+                <span>Jeffy</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="section" style="padding-top: 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <!-- Welcome Section -->
+            <div style="background: white; border-radius: 15px; padding: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        <h2 style="color: var(--primary);">Welcome back, Jeffy!</h2>
+                        <p style="color: #666;">Ready to continue your learning journey?</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="background: #f0f0f0; padding: 0.5rem 1rem; border-radius: 20px; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-coins" style="color: #fdcb6e;"></i>
+                            <span style="font-weight: bold;">1,250</span>
+                        </div>
+                        <div style="background: #f0f0f0; padding: 0.5rem 1rem; border-radius: 20px; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-medal" style="color: #00b894;"></i>
+                            <span style="font-weight: bold;">Level 5</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 1.5rem; border-radius: 10px;">
+                        <h3 style="margin-bottom: 1rem;">Daily Challenge</h3>
+                        <p style="margin-bottom: 1.5rem; opacity: 0.9;">Complete today's challenge to earn bonus points!</p>
+                        <button style="background: white; color: #6c5ce7; border: none; padding: 0.6rem 1.2rem; border-radius: 20px; font-weight: bold; cursor: pointer;">Start Challenge</button>
+                    </div>
+                    
+                    <div style="background: white; border: 2px solid #f0f0f0; padding: 1.5rem; border-radius: 10px;">
+                        <h3 style="margin-bottom: 1rem;">Current Streak</h3>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <i class="fas fa-fire" style="color: #fd79a8; font-size: 1.5rem;"></i>
+                            <span id="streakCount" style="font-size: 1.5rem; font-weight: bold;">0 days</span>
+                        </div>
+                        <p id="streakMessage" style="color: #666; font-size: 0.9rem;">Loading streak data...</p>
+                    </div>
+                    
+                    <div style="background: white; border: 2px solid #f0f0f0; padding: 1.5rem; border-radius: 10px;">
+                        <h3 style="margin-bottom: 1rem;">Recent Activity</h3>
+                        <p style="margin-bottom: 1rem; color: #666;">Completed Algebra Basics</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="width: 100%; height: 6px; background: #f0f0f0; border-radius: 3px;">
+                                <div style="width: 85%; height: 100%; background: #00b894; border-radius: 3px;"></div>
+                            </div>
+                            <span style="margin-left: 1rem; font-size: 0.9rem; color: #666;">85%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Video Search Section -->
+            <div class="video-search-container">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Search Educational Videos</h3>
+                <div class="input-group mb-4">
+                    <input type="text" id="searchQuery" class="form-control" placeholder="Enter educational topic..." style="border-radius: 30px 0 0 30px;">
+                    <button id="searchButton" class="btn btn-primary" style="border-radius: 0 30px 30px 0;">Search Videos</button>
+                </div>
+                
+                <div id="videoResults" class="video-grid"></div>
+                
+                <div id="videoProgress" class="mt-4" style="display: none;">
+                    <h4 class="mb-3">Your Video Progress</h4>
+                    <div id="progressLog"></div>
+                </div>
+            </div>
+            
+            <!-- Pre-loaded Video Frames -->
+            <div class="video-search-container">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Recommended Videos</h3>
+                <div class="video-grid">
+                    <!-- Video 1 -->
+                    <div class="card video-card">
+                        <img src="https://i.ytimg.com/vi/Kf1U3dX5f58/hqdefault.jpg" class="card-img-top video-thumbnail" alt="Mathematics Basics">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Mathematics Basics</h5>
+                            <div class="mt-auto">
+                                <button class="btn btn-primary w-100 mb-2" 
+                                    onclick="playVideo('Kf1U3dX5f58', 'Mathematics Basics')">
+                                    <i class="fas fa-play"></i> Play Video
+                                </button>
+                                <button class="btn btn-success w-100" 
+                                    onclick="trackProgress('Kf1U3dX5f58', 'Mathematics Basics', 720)">
+                                    <i class="fas fa-check"></i> Mark as Watched
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 2 -->
+                    <div class="card video-card">
+                        <img src="https://i.ytimg.com/vi/Ws6TmXDdX9Q/hqdefault.jpg" class="card-img-top video-thumbnail" alt="Science Fundamentals">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Science Fundamentals</h5>
+                            <div class="mt-auto">
+                                <button class="btn btn-primary w-100 mb-2" 
+                                    onclick="playVideo('Ws6TmXDdX9Q', 'Science Fundamentals')">
+                                    <i class="fas fa-play"></i> Play Video
+                                </button>
+                                <button class="btn btn-success w-100" 
+                                    onclick="trackProgress('Ws6TmXDdX9Q', 'Science Fundamentals', 900)">
+                                    <i class="fas fa-check"></i> Mark as Watched
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 3 -->
+                    <div class="card video-card">
+                        <img src="https://i.ytimg.com/vi/RpD9OSon5OM/hqdefault.jpg" class="card-img-top video-thumbnail" alt="English Grammar">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">English Grammar</h5>
+                            <div class="mt-auto">
+                                <button class="btn btn-primary w-100 mb-2" 
+                                    onclick="playVideo('RpD9OSon5OM', 'English Grammar')">
+                                    <i class="fas fa-play"></i> Play Video
+                                </button>
+                                <button class="btn btn-success w-100" 
+                                    onclick="trackProgress('RpD9OSon5OM', 'English Grammar', 600)">
+                                    <i class="fas fa-check"></i> Mark as Watched
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 4 -->
+                    <div class="card video-card">
+                        <img src="https://i.ytimg.com/vi/9h6bzYHfLqk/hqdefault.jpg" class="card-img-top video-thumbnail" alt="History Lessons">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">History Lessons</h5>
+                            <div class="mt-auto">
+                                <button class="btn btn-primary w-100 mb-2" 
+                                    onclick="playVideo('9h6bzYHfLqk', 'History Lessons')">
+                                    <i class="fas fa-play"></i> Play Video
+                                </button>
+                                <button class="btn btn-success w-100" 
+                                    onclick="trackProgress('9h6bzYHfLqk', 'History Lessons', 840)">
+                                    <i class="fas fa-check"></i> Mark as Watched
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 5 -->
+                    <div class="card video-card">
+                        <img src="https://i.ytimg.com/vi/7GFwd3DdN8Q/hqdefault.jpg" class="card-img-top video-thumbnail" alt="Programming Basics">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Programming Basics</h5>
+                            <div class="mt-auto">
+                                <button class="btn btn-primary w-100 mb-2" 
+                                    onclick="playVideo('7GFwd3DdN8Q', 'Programming Basics')">
+                                    <i class="fas fa-play"></i> Play Video
+                                </button>
+                                <button class="btn btn-success w-100" 
+                                    onclick="trackProgress('7GFwd3DdN8Q', 'Programming Basics', 1200)">
+                                    <i class="fas fa-check"></i> Mark as Watched
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                <!-- Left Column -->
+                <div>
+                    <!-- Courses Progress -->
+                    <div style="background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Your Courses</h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div style="border: 1px solid #f0f0f0; border-radius: 10px; padding: 1rem; transition: all 0.3s ease; cursor: pointer;">
+                                <div style="width: 50px; height: 50px; background: #a29bfe; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                    <i class="fas fa-square-root-alt" style="color: white; font-size: 1.5rem;"></i>
+                                </div>
+                                <h4 style="margin-bottom: 0.5rem;">Mathematics</h4>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: #666;">Progress</span>
+                                    <span style="font-size: 0.8rem; font-weight: bold;">78%</span>
+                                </div>
+                                <div style="width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px;">
+                                    <div style="width: 78%; height: 100%; background: #6c5ce7; border-radius: 2px;"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="border: 1px solid #f0f0f0; border-radius: 10px; padding: 1rem; transition: all 0.3s ease; cursor: pointer;">
+                                <div style="width: 50px; height: 50px; background: #fd79a8; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                    <i class="fas fa-flask" style="color: white; font-size: 1.5rem;"></i>
+                                </div>
+                                <h4 style="margin-bottom: 0.5rem;">Science</h4>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: #666;">Progress</span>
+                                    <span style="font-size: 0.8rem; font-weight: bold;">45%</span>
+                                </div>
+                                <div style="width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px;">
+                                    <div style="width: 45%; height: 100%; background: #fd79a8; border-radius: 2px;"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="border: 1px solid #f0f0f0; border-radius: 10px; padding: 1rem; transition: all 0.3s ease; cursor: pointer;">
+                                <div style="width: 50px; height: 50px; background: #00b894; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                    <i class="fas fa-book" style="color: white; font-size: 1.5rem;"></i>
+                                </div>
+                                <h4 style="margin-bottom: 0.5rem;">English</h4>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: #666;">Progress</span>
+                                    <span style="font-size: 0.8rem; font-weight: bold;">92%</span>
+                                </div>
+                                <div style="width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px;">
+                                    <div style="width: 92%; height: 100%; background: #00b894; border-radius: 2px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div style="background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Recent Activity</h3>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f0f0f0;">
+                                <div style="width: 40px; height: 40px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-medal" style="color: #fdcb6e;"></i>
+                                </div>
+                                <div>
+                                    <p style="margin-bottom: 0.3rem;"><strong>Earned a new badge:</strong> Math Whiz</p>
+                                    <p style="font-size: 0.8rem; color: #666;">2 hours ago</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f0f0f0;">
+                                <div style="width: 40px; height: 40px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-check-circle" style="color: #00b894;"></i>
+                                </div>
+                                <div>
+                                    <p style="margin-bottom: 0.3rem;"><strong>Completed:</strong> Algebra Basics Chapter 3</p>
+                                    <p style="font-size: 0.8rem; color: #666;">Yesterday</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f0f0f0;">
+                                <div style="width: 40px; height: 40px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-chart-line" style="color: #0984e3;"></i>
+                                </div>
+                                <div>
+                                    <p style="margin-bottom: 0.3rem;"><strong>New personal best:</strong> 15 correct answers in a row</p>
+                                    <p style="font-size: 0.8rem; color: #666;">2 days ago</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 1rem;">
+                                <div style="width: 40px; height: 40px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-coins" style="color: #fdcb6e;"></i>
+                                </div>
+                                <div>
+                                    <p style="margin-bottom: 0.3rem;"><strong>Earned 50 points:</strong> Daily login bonus</p>
+                                    <p style="font-size: 0.8rem; color: #666;">3 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div>
+                    <!-- Educational News -->
+                    <div style="background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Educational News</h3>
+                        
+                        <div id="newsContainer" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <!-- News items will be loaded here by JavaScript -->
+                            <div style="padding: 1rem; border-radius: 10px; background: #f8f9fa; cursor: pointer; transition: all 0.3s ease;">
+                                <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Loading news...</h4>
+                                <p style="color: #666; font-size: 0.9rem;">Please wait while we fetch the latest educational news.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Daily Goals -->
+                    <div style="background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Daily Goals</h3>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: #f8f9fa; border-radius: 10px;">
+                                <input type="checkbox" id="goal1" style="transform: scale(1.5);">
+                                <label for="goal1" style="flex: 1;">
+                                    <p style="font-weight: 500;">Complete 1 lesson</p>
+                                </label>
+                                <div style="font-weight: bold; color: var(--primary);">+50 pts</div>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: #f8f9fa; border-radius: 10px;">
+                                <input type="checkbox" id="goal2" style="transform: scale(1.5);">
+                                <label for="goal2" style="flex: 1;">
+                                    <p style="font-weight: 500;">Watch 1 educational video</p>
+                                </label>
+                                <div style="font-weight: bold; color: var(--primary);">+30 pts</div>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: #f8f9fa; border-radius: 10px;">
+                                <input type="checkbox" id="goal3" style="transform: scale(1.5);">
+                                <label for="goal3" style="flex: 1;">
+                                    <p style="font-weight: 500;">Take a practice quiz</p>
+                                </label>
+                                <div style="font-weight: bold; color: var(--primary);">+40 pts</div>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: #f8f9fa; border-radius: 10px;">
+                                <input type="checkbox" id="goal4" style="transform: scale(1.5);">
+                                <label for="goal4" style="flex: 1;">
+                                    <p style="font-weight: 500;">Maintain your streak</p>
+                                </label>
+                                <div style="font-weight: bold; color: var(--primary);">+20 pts</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="modal fade video-modal" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="videoModalLabel">Video Player</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="modalVideoPlayer" class="ratio ratio-16x9"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="nav-logo" style="justify-content: center; color: white;">
+                <i class="fas fa-brain"></i>
+                <span>Cognifriend</span>
+            </div>
+            <div class="footer-links">
+                <a href="about_us.html">About Us</a>
+                <a href="testimonials.html">Success Stories</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="copyright">© 2023 Cognifriend. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // MongoDB connection and streak logic
+        async function fetchUserStreak() {
+            // In a real app, this would be an API call to your backend
+            // For this example, we'll simulate a database response
+            
+            // Simulated MongoDB query to AITutor.users collection
+            const userId = "jeffy_edwina_christa"; // This would come from your auth system
+            const dbResponse = {
+                _id: userId,
+                username: "Jeffy Edwina Christa J",
+                streak: {
+                    currentStreak: 7,
+                    lastActiveDate: new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toISOString(), // Today
+                    longestStreak: 12
+                },
+                points: 1250,
+                level: 5
+            };
+            
+            // Calculate streak based on last active date
+            const lastActive = new Date(dbResponse.streak.lastActiveDate);
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            // Reset time parts for accurate comparison
+            lastActive.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            yesterday.setHours(0, 0, 0, 0);
+            
+            let currentStreak = dbResponse.streak.currentStreak;
+            let streakMessage = "";
+            
+            if (lastActive.getTime() === today.getTime()) {
+                // User was active today - streak continues
+                streakMessage = "Keep it up! Come back tomorrow to maintain your streak.";
+            } else if (lastActive.getTime() === yesterday.getTime()) {
+                // User was active yesterday - increment streak
+                currentStreak++;
+                streakMessage = "Great job! You're maintaining your streak.";
+            } else {
+                // Streak broken
+                currentStreak = 1;
+                streakMessage = "New streak started! Come back tomorrow to keep it going.";
+            }
+            
+            // Update the UI
+            document.getElementById('streakCount').textContent = `${currentStreak} days`;
+            document.getElementById('streakMessage').textContent = streakMessage;
+            
+            // In a real app, you would now update the database with the new streak count
+            // await updateUserStreak(userId, currentStreak);
+            
+            return currentStreak;
+        }
+        
+        // Video Search Functionality
+        const apiKey = 'AIzaSyDRa12Dx8JLVUBkrlRsCVtD0TzwuSY84Ys';
+        
+        document.getElementById('searchButton').addEventListener('click', async () => {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (!query) return;
+            
+            try {
+                const videos = await fetchYouTubeVideos(query);
+                displayVideos(videos);
+                document.getElementById('videoProgress').style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to fetch videos. Please try again.');
+            }
+        });
+        
+        async function fetchYouTubeVideos(query) {
+            const searchEndpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&order=viewCount&maxResults=6&q=${encodeURIComponent(query)}&key=${apiKey}`;
+            const searchResponse = await fetch(searchEndpoint);
+            if (!searchResponse.ok) throw new Error('YouTube API Error');
+            
+            const searchData = await searchResponse.json();
+            const videoIds = searchData.items.map(video => video.id.videoId).join(',');
+            
+            const detailsEndpoint = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds}&key=${apiKey}`;
+            const detailsResponse = await fetch(detailsEndpoint);
+            if (!detailsResponse.ok) throw new Error('YouTube Details Error');
+            
+            const detailsData = await detailsResponse.json();
+            
+            return searchData.items
+                .map((video, index) => ({
+                    ...video,
+                    duration: parseISO8601Duration(detailsData.items[index].contentDetails.duration)
+                }))
+                .filter(video => video.duration > 60);
+        }
+        
+        function parseISO8601Duration(duration) {
+            const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+            return (parseInt(match[1] || 0) * 3600 +
+                   (parseInt(match[2] || 0) * 60) +
+                   parseInt(match[3] || 0));
+        }
+        
+        function displayVideos(videos) {
+            const videoResults = document.getElementById('videoResults');
+            videoResults.innerHTML = videos.map(video => `
+                <div class="card video-card">
+                    <img src="${video.snippet.thumbnails.medium.url}" class="card-img-top video-thumbnail" alt="${video.snippet.title}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">${video.snippet.title}</h5>
+                        <div class="mt-auto">
+                            <button class="btn btn-primary w-100 mb-2" 
+                                onclick="playVideo('${video.id.videoId}', '${video.snippet.title.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-play"></i> Play Video
+                            </button>
+                            <button class="btn btn-success w-100" 
+                                onclick="trackProgress('${video.id.videoId}', '${video.snippet.title.replace(/'/g, "\\'")}', ${video.duration})">
+                                <i class="fas fa-check"></i> Mark as Watched
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function trackProgress(videoId, title, duration) {
+            const percentage = Math.floor(Math.random() * 51) + 50; // 50-100%
+            const progressLog = document.getElementById('progressLog');
+            
+            progressLog.innerHTML = `
+                <div class="progress mb-3">
+                    <div class="progress-bar progress-bar-video" 
+                        role="progressbar" 
+                        style="width: ${percentage}%" 
+                        aria-valuenow="${percentage}" 
+                        aria-valuemin="0" 
+                        aria-valuemax="100">
+                        ${title} - ${percentage}% watched
+                    </div>
+                </div>
+            ` + progressLog.innerHTML;
+            
+            // Update streak when user watches a video
+            fetchUserStreak();
+        }
+        
+        function playVideo(videoId, title) {
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('modalVideoPlayer');
+            
+            document.getElementById('videoModalLabel').textContent = title;
+            player.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen></iframe>`;
+            
+            const videoModal = new bootstrap.Modal(modal);
+            modal.addEventListener('hidden.bs.modal', () => {
+                player.innerHTML = ''; // Stop video playback
+            });
+            videoModal.show();
+        }
+        
+        // Fetch news and streak when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchEducationalNews();
+            fetchUserStreak();
+        });
+        
+        // Fetch educational news from API
+        async function fetchEducationalNews() {
+            const apiKey = 'f7d0f18dda904698a4646ab9bba45d0f'; // Replace with your actual API key
+            const apiUrl = `https://newsapi.org/v2/everything?q=education&apiKey=${apiKey}`;
+            
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.status === 'ok' && data.articles.length > 0) {
+                    displayNews(data.articles.slice(0, 3)); // Show first 3 articles
+                } else {
+                    displayDefaultNews();
+                }
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                displayDefaultNews();
+            }
+        }
+        
+        function displayNews(articles) {
+            const newsContainer = document.getElementById('newsContainer');
+            newsContainer.innerHTML = '';
+            
+            articles.forEach(article => {
+                const newsItem = document.createElement('div');
+                newsItem.style.padding = '1rem';
+                newsItem.style.borderRadius = '10px';
+                newsItem.style.background = '#f8f9fa';
+                newsItem.style.cursor = 'pointer';
+                newsItem.style.transition = 'all 0.3s ease';
+                
+                newsItem.innerHTML = `
+                    <h4 style="margin-bottom: 0.5rem; color: var(--primary);">${article.title}</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">${article.description || 'No description available'}</p>
+                    <p style="color: #999; font-size: 0.8rem;">${new Date(article.publishedAt).toLocaleDateString()}</p>
+                `;
+                
+                newsItem.addEventListener('click', () => {
+                    window.open(article.url, '_blank');
+                });
+                
+                newsContainer.appendChild(newsItem);
+            });
+        }
+        
+        function displayDefaultNews() {
+            const newsContainer = document.getElementById('newsContainer');
+            newsContainer.innerHTML = `
+                <div style="padding: 1rem; border-radius: 10px; background: #f8f9fa;">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--primary);">The Future of AI in Education</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">How artificial intelligence is transforming learning experiences worldwide.</p>
+                    <p style="color: #999; font-size: 0.8rem;">October 15, 2023</p>
+                </div>
+                <div style="padding: 1rem; border-radius: 10px; background: #f8f9fa;">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Gamification in Learning</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">Why game elements improve engagement and retention in educational platforms.</p>
+                    <p style="color: #999; font-size: 0.8rem;">October 10, 2023</p>
+                </div>
+                <div style="padding: 1rem; border-radius: 10px; background: #f8f9fa;">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Personalized Learning Trends</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">The latest developments in adaptive learning technologies.</p>
+                    <p style="color: #999; font-size: 0.8rem;">October 5, 2023</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

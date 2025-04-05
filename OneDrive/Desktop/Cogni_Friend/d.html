@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Cognifriend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+        }
+        
+        /* Header Styling */
+        nav {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-logo i {
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .nav-links a.active {
+            font-weight: 600;
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+        }
+        
+        /* Video Search Section Styles */
+        .video-search-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .video-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .video-thumbnail {
+            height: 180px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .video-modal .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+        
+        .video-modal .modal-header {
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar-video {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        #videoResults {
+            min-height: 300px;
+        }
+        
+        /* News Container */
+        #newsContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .news-item {
+            padding: 1rem;
+            border-radius: 10px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .news-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        
+        .news-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+        }
+        
+        /* Checklist Styles */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .checklist-item:hover {
+            background: #e9ecef;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            transform: scale(1.5);
+        }
+        
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Help Desk Button */
+        .help-desk-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .help-desk-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* Profile Section */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-section:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+        
+        .profile-name {
+            font-weight: 500;
+        }
+        
+        /* Stats Cards */
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stats-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .stats-card .stats-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-card .stats-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .profile-edit-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: none; /* Hidden by default */
+        }
+        
+        .profile-picture-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-picture-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .btn-save {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-save:hover {
+            background: #5a4fd3;
+        }
+        
+        /* Add tab styling */
+        .profile-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .profile-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-logo">
+            <i class="fas fa-brain"></i>
+            <span>Cognifriend</span>
+        </div>
+        <div class="nav-links">
+            <a href="d.html" class="active">Dashboard</a>
+            <a href="progress.html">Progress</a>
+            <div class="profile-section">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-avatar" id="profileAvatar">
+                <span class="profile-name" id="profileName">Loading...</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="section" style="padding-top: 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <!-- Welcome Section -->
+            <div style="background: white; border-radius: 15px; padding: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        <h2 style="color: var(--primary);" id="welcomeMessage">Welcome back, User!</h2>
+                        <p style="color: #666;">Ready to continue your learning journey?</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="background: #f0f0f0; padding: 0.5rem 1rem; border-radius: 20px; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-coins" style="color: #fdcb6e;"></i>
+                            <span style="font-weight: bold;" id="coinCount">1,250</span>
+                        </div>
+                        <div style="background: #f0f0f0; padding: 0.5rem 1rem; border-radius: 20px; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-medal" style="color: #00b894;"></i>
+                            <span style="font-weight: bold;" id="userLevel">Level 5</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 1.5rem; border-radius: 10px;">
+                        <h3 style="margin-bottom: 1rem;">Daily Challenge</h3>
+                        <p style="margin-bottom: 1.5rem; opacity: 0.9;">Complete today's challenge to earn bonus points!</p>
+                        <button style="background: white; color: #6c5ce7; border: none; padding: 0.6rem 1.2rem; border-radius: 20px; font-weight: bold; cursor: pointer;">Start Challenge</button>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <h3>Courses Completed</h3>
+                        <div class="stats-value" id="completedCourses">12</div>
+                        <div class="stats-label">Keep up the good work!</div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <h3>Hours Learned</h3>
+                        <div class="stats-value" id="hoursLearned">48</div>
+                        <div class="stats-label">This month</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Video Search Section -->
+            <div class="video-search-container">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Search Educational Videos</h3>
+                <div class="input-group mb-4">
+                    <input type="text" id="searchQuery" class="form-control" placeholder="Enter educational topic..." style="border-radius: 30px 0 0 30px;">
+                    <button id="searchButton" class="btn btn-primary" style="border-radius: 0 30px 30px 0;">Search Videos</button>
+                </div>
+                
+                <div id="videoResults" class="video-grid">
+                    <div style="display: flex; justify-content: center; align-items: center; height: 300px; color: #666; grid-column: 1 / -1;">
+                        <p>Enter a topic above to search for educational videos</p>
+                    </div>
+                </div>
+                
+                <div id="videoProgress" class="mt-4" style="display: none;">
+                    <h4 class="mb-3">Your Video Progress</h4>
+                    <div id="progressLog"></div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                <!-- Left Column -->
+                <div>
+                    <!-- Courses Progress -->
+                    <div style="background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Your Courses</h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div style="border: 1px solid #f0f0f0; border-radius: 10px; padding: 1rem; transition: all 0.3s ease; cursor: pointer;">
+                                <div style="width: 50px; height: 50px; background: #a29bfe; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                    <i class="fas fa-square-root-alt" style="color: white; font-size: 1.5rem;"></i>
+                                </div>
+                                <h4 style="margin-bottom: 0.5rem;">Mathematics</h4>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: #666;">Progress</span>
+                                    <span style="font-size: 0.8rem; font-weight: bold;">78%</span>
+                                </div>
+                                <div style="width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px;">
+                                    <div style="width: 78%; height: 100%; background: #6c5ce7; border-radius: 2px;"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="border: 1px solid #f0f0f0; border-radius: 10px; padding: 1rem; transition: all 0.3s ease; cursor: pointer;">
+                                <div style="width: 50px; height: 50px; background: #fd79a8; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                    <i class="fas fa-flask" style="color: white; font-size: 1.5rem;"></i>
+                                </div>
+                                <h4 style="margin-bottom: 0.5rem;">Science</h4>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: #666;">Progress</span>
+                                    <span style="font-size: 0.8rem; font-weight: bold;">45%</span>
+                                </div>
+                                <div style="width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px;">
+                                    <div style="width: 45%; height: 100%; background: #fd79a8; border-radius: 2px;"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="border: 1px solid #f0f0f0; border-radius: 10px; padding: 1rem; transition: all 0.3s ease; cursor: pointer;">
+                                <div style="width: 50px; height: 50px; background: #00b894; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                    <i class="fas fa-book" style="color: white; font-size: 1.5rem;"></i>
+                                </div>
+                                <h4 style="margin-bottom: 0.5rem;">English</h4>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: #666;">Progress</span>
+                                    <span style="font-size: 0.8rem; font-weight: bold;">92%</span>
+                                </div>
+                                <div style="width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px;">
+                                    <div style="width: 92%; height: 100%; background: #00b894; border-radius: 2px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div>
+                    <!-- Educational News -->
+                    <div style="background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                            <h3 style="color: var(--primary); margin: 0;">Educational News</h3>
+                            <button id="refreshNews" class="btn btn-sm btn-outline-primary" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        
+                        <div id="newsContainer">
+                            <div style="display: flex; justify-content: center; align-items: center; height: 200px;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Daily Goals -->
+                    <div style="background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Daily Goals</h3>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 1rem;" id="checklistContainer">
+                            <div class="checklist-item">
+                                <input type="checkbox" id="goal1" style="transform: scale(1.5);">
+                                <label for="goal1" style="flex: 1;">
+                                    <p style="font-weight: 500;">Complete 1 lesson</p>
+                                </label>
+                                <div style="font-weight: bold; color: var(--primary);">+50 pts</div>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="goal2" style="transform: scale(1.5);">
+                                <label for="goal2" style="flex: 1;">
+                                    <p style="font-weight: 500;">Watch 1 educational video</p>
+                                </label>
+                                <div style="font-weight: bold; color: var(--primary);">+30 pts</div>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="goal3" style="transform: scale(1.5);">
+                                <label for="goal3" style="flex: 1;">
+                                    <p style="font-weight: 500;">Take a practice quiz</p>
+                                </label>
+                                <div style="font-weight: bold; color: var(--primary);">+40 pts</div>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="goal4" style="transform: scale(1.5);">
+                                <label for="goal4" style="flex: 1;">
+                                    <p style="font-weight: 500;">Review notes</p>
+                                </label>
+                                <div style="font-weight: bold; color: var(--primary);">+20 pts</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="modal fade video-modal" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="videoModalLabel">Video Player</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="modalVideoPlayer" class="ratio ratio-16x9"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-edit-container" id="profileEditContainer">
+        <div class="profile-tabs">
+            <div class="profile-tab active" data-tab="dashboard">Dashboard</div>
+            <div class="profile-tab" data-tab="edit-profile">Edit Profile</div>
+        </div>
+        
+        <div id="editProfileContent">
+            <h2 style="color: var(--primary); margin-bottom: 1.5rem;">Edit Profile</h2>
+            
+            <div class="profile-picture-container">
+                <img id="profilePicturePreview" src="https://randomuser.me/api/portraits/men/32.jpg" class="profile-picture-preview" alt="Profile Preview">
+                <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
+                <button class="btn btn-outline-primary" onclick="document.getElementById('profilePictureInput').click()">
+                    Change Profile Picture
+                </button>
+            </div>
+            
+            <div class="form-group">
+                <label for="editName" class="form-label">Full Name</label>
+                <input type="text" id="editName" class="form-control" placeholder="Enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label for="editEmail" class="form-label">Email</label>
+                <input type="email" id="editEmail" class="form-control" placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label for="editPassword" class="form-label">New Password (leave blank to keep current)</label>
+                <input type="password" id="editPassword" class="form-control" placeholder="Enter new password">
+            </div>
+            
+            <h4 style="color: var(--primary); margin: 1.5rem 0 1rem;">Subject Ratings</h4>
+            
+            <div class="form-group">
+                <label for="editMath" class="form-label">Mathematics</label>
+                <select id="editMath" class="form-control">
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="editEnglish" class="form-label">English</label>
+                <select id="editEnglish" class="form-control">
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="editScience" class="form-label">Science</label>
+                <select id="editScience" class="form-control">
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="editEVS" class="form-label">EVS</label>
+                <select id="editEVS" class="form-control">
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="editScreenTime" class="form-label">Daily Screen Time (hours)</label>
+                <input type="number" id="editScreenTime" class="form-control" placeholder="Enter daily screen time">
+            </div>
+            
+            <button class="btn-save" id="saveProfileBtn">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- Help Desk Button -->
+    <button class="help-desk-btn" id="helpDeskBtn" title="Help Desk">
+        <i class="fas fa-headset"></i>
+    </button>
+
+    <footer>
+        <div class="footer-content">
+            <div class="nav-logo" style="justify-content: center; color: white;">
+                <i class="fas fa-brain"></i>
+                <span>Cognifriend</span>
+            </div>
+            <div class="footer-links">
+                <a href="about_us.html">About Us</a>
+                <a href="testimonials.html">Success Stories</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="copyright">© 2023 Cognifriend. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize user data from localStorage or database
+         // Initialize user data from localStorage or database
+         function initializeUserData() {
+            // In a real app, you would fetch this from your database
+            const userData = JSON.parse(localStorage.getItem('userData')) || {
+                id: 1,
+                name: "John Doe",
+                email: "john.doe@example.com",
+                avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                coins: 1250,
+                level: 5,
+                completedCourses: 12,
+                hoursLearned: 48,
+                mathLevel: "Intermediate",
+                englishLevel: "Advanced",
+                scienceLevel: "Beginner",
+                evsLevel: "Intermediate",
+                dailyScreenTime: 2,
+                lastLogin: new Date().toISOString()
+            };
+            
+            // Update UI with user data
+            updateUserUI(userData);
+            
+            return userData;
+        }
+        
+        function updateUserUI(userData) {
+            document.getElementById('profileName').textContent = userData.name;
+            document.getElementById('profileAvatar').src = userData.avatar;
+            document.getElementById('welcomeMessage').textContent = `Welcome back, ${userData.name.split(' ')[0]}!`;
+            document.getElementById('coinCount').textContent = userData.coins.toLocaleString();
+            document.getElementById('userLevel').textContent = `Level ${userData.level}`;
+            document.getElementById('completedCourses').textContent = userData.completedCourses;
+            document.getElementById('hoursLearned').textContent = userData.hoursLearned;
+        }
+        
+        // Profile edit functionality
+        function setupProfileEdit() {
+            const profileSection = document.querySelector('.profile-section');
+            const profileEditContainer = document.getElementById('profileEditContainer');
+            
+            // Show profile edit when profile is clicked
+            profileSection.addEventListener('click', function() {
+                // Hide dashboard content
+                document.querySelector('.section').style.display = 'none';
+                // Show profile edit
+                profileEditContainer.style.display = 'block';
+                
+                // Load current user data into form
+                const userData = JSON.parse(localStorage.getItem('userData')) || initializeUserData();
+                document.getElementById('editName').value = userData.name;
+                document.getElementById('editEmail').value = userData.email;
+                document.getElementById('editMath').value = userData.mathLevel;
+                document.getElementById('editEnglish').value = userData.englishLevel;
+                document.getElementById('editScience').value = userData.scienceLevel;
+                document.getElementById('editEVS').value = userData.evsLevel;
+                document.getElementById('editScreenTime').value = userData.dailyScreenTime;
+                document.getElementById('profilePicturePreview').src = userData.avatar;
+            });
+            
+            // Tab switching
+            document.querySelectorAll('.profile-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    if (this.dataset.tab === 'dashboard') {
+                        // Show dashboard content
+                        document.querySelector('.section').style.display = 'block';
+                        // Hide profile edit
+                        profileEditContainer.style.display = 'none';
+                    }
+                    
+                    // Update active tab
+                    document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Profile picture upload
+            document.getElementById('profilePictureInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        document.getElementById('profilePicturePreview').src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Save profile changes
+            document.getElementById('saveProfileBtn').addEventListener('click', function() {
+                const userData = JSON.parse(localStorage.getItem('userData')) || initializeUserData();
+                
+                // Update user data
+                userData.name = document.getElementById('editName').value;
+                userData.email = document.getElementById('editEmail').value;
+                userData.mathLevel = document.getElementById('editMath').value;
+                userData.englishLevel = document.getElementById('editEnglish').value;
+                userData.scienceLevel = document.getElementById('editScience').value;
+                userData.evsLevel = document.getElementById('editEVS').value;
+                userData.dailyScreenTime = parseInt(document.getElementById('editScreenTime').value) || 0;
+                
+                // Update profile picture if changed
+                const newProfilePic = document.getElementById('profilePicturePreview').src;
+                if (newProfilePic !== userData.avatar) {
+                    userData.avatar = newProfilePic;
+                }
+                
+                // Update password if provided
+                const newPassword = document.getElementById('editPassword').value;
+                if (newPassword) {
+                    // In a real app, you would hash the password before storing
+                    userData.password = newPassword;
+                }
+                
+                // Save to localStorage (in a real app, you would send to server)
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                // Update UI
+                updateUserUI(userData);
+                
+                // Show success message
+                showNotification('Profile updated successfully!', 'success');
+                
+                // Return to dashboard
+                document.querySelector('.section').style.display = 'block';
+                profileEditContainer.style.display = 'none';
+            });
+        }
+        
+        // Coin management functions
+        function addCoins(amount) {
+            const userData = JSON.parse(localStorage.getItem('userData')) || initializeUserData();
+            userData.coins += amount;
+            localStorage.setItem('userData', JSON.stringify(userData));
+            document.getElementById('coinCount').textContent = userData.coins.toLocaleString();
+            return userData.coins;
+        }
+        
+        function deductCoins(amount) {
+            const userData = JSON.parse(localStorage.getItem('userData')) || initializeUserData();
+            if (userData.coins >= amount) {
+                userData.coins -= amount;
+                localStorage.setItem('userData', JSON.stringify(userData));
+                document.getElementById('coinCount').textContent = userData.coins.toLocaleString();
+                return true;
+            }
+            return false;
+        }
+        
+        // Previous checklist initialization remains the same
+        function initializeChecklist(userData) {
+            const checklist = JSON.parse(localStorage.getItem('dailyChecklist')) || {
+                goal1: false,
+                goal2: false,
+                goal3: false,
+                goal4: false
+            };
+            
+            document.getElementById('goal1').checked = checklist.goal1;
+            document.getElementById('goal2').checked = checklist.goal2;
+            document.getElementById('goal3').checked = checklist.goal3;
+            document.getElementById('goal4').checked = checklist.goal4;
+            
+            // Add event listeners
+            document.querySelectorAll('#checklistContainer input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const checklist = JSON.parse(localStorage.getItem('dailyChecklist')) || {
+                        goal1: false,
+                        goal2: false,
+                        goal3: false,
+                        goal4: false
+                    };
+                    
+                    // Only add coins if the checkbox is being checked (not unchecked)
+                    if (this.checked && !checklist[this.id]) {
+                        let points = 0;
+                        switch(this.id) {
+                            case 'goal1': points = 50; break;
+                            case 'goal2': points = 30; break;
+                            case 'goal3': points = 40; break;
+                            case 'goal4': points = 20; break;
+                        }
+                        
+                        addCoins(points);
+                        showNotification(`+${points} points earned!`, 'success');
+                    }
+                    
+                    checklist[this.id] = this.checked;
+                    localStorage.setItem('dailyChecklist', JSON.stringify(checklist));
+                });
+            });
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.padding = '10px 20px';
+            notification.style.backgroundColor = type === 'success' ? '#00b894' : '#d63031';
+            notification.style.color = 'white';
+            notification.style.borderRadius = '5px';
+            notification.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
+            notification.style.zIndex = '1000';
+            notification.style.transition = 'all 0.3s ease';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Video functionality
+        function playVideo(videoId, title) {
+            const modal = new bootstrap.Modal(document.getElementById('videoModal'));
+            document.getElementById('videoModalLabel').textContent = title;
+            
+            const player = document.getElementById('modalVideoPlayer');
+            player.innerHTML = `
+                <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen></iframe>
+            `;
+            
+            modal.show();
+            
+            // When modal closes, clear the iframe
+            document.getElementById('videoModal').addEventListener('hidden.bs.modal', function() {
+                player.innerHTML = '';
+            });
+        }
+        
+        function trackProgress(videoId, title, duration) {
+            const progressLog = document.getElementById('progressLog');
+            const percentage = Math.floor(Math.random() * 51) + 50; // 50-100%
+            
+            progressLog.innerHTML = `
+                <div class="progress mb-3">
+                    <div class="progress-bar progress-bar-video" 
+                        role="progressbar" 
+                        style="width: ${percentage}%" 
+                        aria-valuenow="${percentage}" 
+                        aria-valuemin="0" 
+                        aria-valuemax="100">
+                        ${title} - ${percentage}% watched
+                    </div>
+                </div>
+            ` + progressLog.innerHTML;
+            
+            document.getElementById('videoProgress').style.display = 'block';
+            
+            // Mark "Watch 1 educational video" as completed
+            document.getElementById('goal2').checked = true;
+            const checklist = JSON.parse(localStorage.getItem('dailyChecklist')) || {
+                goal1: false,
+                goal2: false,
+                goal3: false,
+                goal4: false
+            };
+            checklist.goal2 = true;
+            localStorage.setItem('dailyChecklist', JSON.stringify(checklist));
+            
+            // Add coins for watching video
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            userData.coins += 30;
+            localStorage.setItem('userData', JSON.stringify(userData));
+            document.getElementById('coinCount').textContent = userData.coins.toLocaleString();
+            
+            showNotification('+30 points for watching a video!', 'success');
+        }
+        
+        // YouTube API search
+        const apiKey = 'AIzaSyDRa12Dx8JLVUBkrlRsCVtD0TzwuSY84Ys';
+        
+        document.getElementById('searchButton').addEventListener('click', async () => {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (!query) return;
+            
+            try {
+                const videos = await fetchYouTubeVideos(query);
+                displayVideos(videos);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to fetch videos. Please try again.');
+            }
+        });
+        
+        async function fetchYouTubeVideos(query) {
+            const searchEndpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&order=viewCount&maxResults=6&q=${encodeURIComponent(query)}&key=${apiKey}`;
+            const searchResponse = await fetch(searchEndpoint);
+            if (!searchResponse.ok) throw new Error('YouTube API Error');
+            
+            const searchData = await searchResponse.json();
+            const videoIds = searchData.items.map(video => video.id.videoId).join(',');
+            
+            const detailsEndpoint = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds}&key=${apiKey}`;
+            const detailsResponse = await fetch(detailsEndpoint);
+            if (!detailsResponse.ok) throw new Error('YouTube Details Error');
+            
+            const detailsData = await detailsResponse.json();
+            
+            return searchData.items.map((video, index) => ({
+                ...video,
+                duration: parseISO8601Duration(detailsData.items[index].contentDetails.duration)
+            }));
+        }
+        
+        function parseISO8601Duration(duration) {
+            const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+            return (parseInt(match[1] || 0) * 3600 +
+                   (parseInt(match[2] || 0) * 60) +
+                   parseInt(match[3] || 0));
+        }
+        
+        function displayVideos(videos) {
+            const videoResults = document.getElementById('videoResults');
+            videoResults.innerHTML = videos.map(video => `
+                <div class="card video-card">
+                    <img src="${video.snippet.thumbnails.medium.url}" class="card-img-top video-thumbnail" alt="${video.snippet.title}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">${video.snippet.title}</h5>
+                        <div class="mt-auto">
+                            <button class="btn btn-primary w-100 mb-2" 
+                                onclick="playVideo('${video.id.videoId}', '${video.snippet.title.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-play"></i> Play Video
+                            </button>
+                            <button class="btn btn-success w-100" 
+                                onclick="trackProgress('${video.id.videoId}', '${video.snippet.title.replace(/'/g, "\\'")}', ${video.duration})">
+                                <i class="fas fa-check"></i> Mark as Watched
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // News API functionality
+const newsApiKey = 'f7d0f18dda904698a4646ab9bba45d0f';
+
+async function fetchEducationNews() {
+    try {
+        // Show loading state
+        const newsContainer = document.getElementById('newsContainer');
+        newsContainer.innerHTML = `
+            <div style="display: flex; justify-content: center; align-items: center; height: 200px;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        `;
+        
+        // Fetch news from NewsAPI with proper headers
+        const response = await fetch(`https://newsapi.org/v2/everything?q=education&sortBy=publishedAt`, {
+            headers: {
+                'X-Api-Key': newsApiKey
+            }
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'News API Error');
+        }
+        
+        const data = await response.json();
+        
+        // Display news articles
+        if (data.articles && data.articles.length > 0) {
+            newsContainer.innerHTML = data.articles.slice(0, 3).map(article => `
+                <div class="news-item" onclick="window.open('${article.url}', '_blank')">
+                    ${article.urlToImage ? `<img src="${article.urlToImage}" alt="${article.title}" style="max-width: 100%; height: auto;">` : ''}
+                    <h4 style="margin-bottom: 0.5rem; color: var(--primary);">${article.title}</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">${article.description || 'No description available'}</p>
+                    <p style="color: #999; font-size: 0.8rem;">
+                        ${new Date(article.publishedAt).toLocaleDateString()} • ${article.source.name}
+                    </p>
+                </div>
+            `).join('');
+        } else {
+            newsContainer.innerHTML = `
+                <div style="display: flex; justify-content: center; align-items: center; height: 200px; color: #666;">
+                    <p>No education news found at this time.</p>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error fetching news:', error);
+        const newsContainer = document.getElementById('newsContainer');
+        newsContainer.innerHTML = `
+            <div style="display: flex; justify-content: center; align-items: center; height: 200px; color: #666;">
+                <p>${error.message || 'Failed to load news. Please try again later.'}</p>
+            </div>
+        `;
+    }
+}
+        // Help desk button functionality
+        document.getElementById('helpDeskBtn').addEventListener('click', function() {
+            // In a real app, this would open a chatbot interface
+            alert('Connecting you to our help desk chatbot...');
+            // Here you would typically open a chat widget or redirect to a chat page
+        });
+        
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const userData = initializeUserData();
+            initializeChecklist(userData);
+            
+            // Show video progress section if there are any logs
+            if (localStorage.getItem('videoProgress')) {
+                document.getElementById('progressLog').innerHTML = localStorage.getItem('videoProgress');
+                document.getElementById('videoProgress').style.display = 'block';
+            }
+            
+            // Fetch education news
+            fetchEducationNews();
+            
+            // Add refresh button event listener
+            document.getElementById('refreshNews').addEventListener('click', fetchEducationNews);
+        });
+
+        
+    </script>
+</body>
+</html>
